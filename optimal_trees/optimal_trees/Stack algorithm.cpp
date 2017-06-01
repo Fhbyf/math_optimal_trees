@@ -1,10 +1,12 @@
+#pragma once
 #include "stdafx.h"
 #include <iostream>
-#include "huynya.h"
 #include <stack>
 #include "Stack algorithm.h"
 
 using namespace std;
+
+node *T;
 
 //комбинируем два элемента в дереве
 int add_father(node *&T, size_t w1, size_t w2, int lev, int curr_lev, int max_lev)
@@ -13,6 +15,8 @@ int add_father(node *&T, size_t w1, size_t w2, int lev, int curr_lev, int max_le
 		add_father(T->right, w1, w2, lev, curr_lev + 1, max_lev);
 	if (T->left && !T->right && curr_lev == lev - 1)
 	{
+		T = new node;
+		T->right = new node;
 		T->right->weight = w2;
 		T->right->left = NULL;
 		T->right->right = NULL;
@@ -21,6 +25,7 @@ int add_father(node *&T, size_t w1, size_t w2, int lev, int curr_lev, int max_le
 	}
 	if (T->left && T->right && T->left->weight == w1 && T->right->weight == w2)
 	{
+		T = new node;
 		T->weight = w1 + w2;
 		//наверное надо учесть, что w2 может быть не отцом и обнулить его хвост
 		return T->weight;
@@ -29,6 +34,8 @@ int add_father(node *&T, size_t w1, size_t w2, int lev, int curr_lev, int max_le
 		add_father(T->left, w1, w2, lev, curr_lev + 1, max_lev);
 	if (!T && curr_lev == lev - 1)
 	{
+		T = new node;
+		T->left = new node;
 		T->left->weight = w1;
 		T->left->left = NULL;
 		T->left->right = NULL;

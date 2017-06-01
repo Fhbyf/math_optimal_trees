@@ -1,4 +1,6 @@
 #pragma once
+#include "stdafx.h"
+#include <stack>
 
 using namespace std;
 
@@ -8,6 +10,5 @@ struct node {
 	node *left, *right;
 };
 
-node *T;
 
 bool Move1(stack<node> &st, stack<node> &qu);

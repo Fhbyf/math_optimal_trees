@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 #include <iostream>
 #include <algorithm>
@@ -5,7 +6,8 @@
 #include <queue>
 #include <stack>
 #include "Stack algorithm.h"
-//#include "huynya.h"
+
+//node *T;
 
 using namespace std;
 
