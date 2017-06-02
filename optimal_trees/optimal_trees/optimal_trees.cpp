@@ -12,7 +12,7 @@
 using namespace std;
 
 bool isCompatible(vector<node>, size_t, size_t);  //поиск всех своместимых для i-того элемента
-vector<node> findAllCompatibles(vector<node>, size_t);
+vector<node> findAllCompatibles(vector<node>&, size_t);
 node makeParent(node*, node*);
 size_t min_node(vector<node>,bool);
 void erase(vector<node>*, size_t);
@@ -96,11 +96,13 @@ size_t min_node(vector<node> all, bool orEqual) {
 }
 
 void erase(vector<node> *nodes, size_t id) {
-	node rght = *(*nodes)[id - 1].right;   //костылиииииии
+	/*node rght = *(*nodes)[id - 1].right;   //костылиииииии
 	nodes->erase(nodes->begin() + id);
-	(*nodes)[id - 1].right = &rght;
-	for (size_t i = id; i < nodes->size(); i++)
+	(*nodes)[id - 1].right = &rght;*/
+
+	for (size_t i = id; i < nodes->size() - 1; i++)
 	{
+		swap((*nodes)[i], (*nodes)[i + 1]);
 		--(*nodes)[i].id;           //что делать с id детей?
 	}
 }
@@ -128,7 +130,7 @@ node makeParent(node *a, node *b) {
 	return { a->id, '\0', (a->weight+b->weight), 0, a, b };
 }
 
-vector<node> findAllCompatibles(vector<node> arr, size_t curr)
+vector<node> findAllCompatibles(vector<node> &arr, size_t curr)
 {   
 	vector<node> all_compatible;
 	for (size_t i = 0; i < arr.size(); i++)
