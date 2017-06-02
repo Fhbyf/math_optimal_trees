@@ -13,7 +13,7 @@ using namespace std;
 
 bool isCompatible(vector<node>, size_t, size_t);  //поиск всех своместимых для i-того элемента
 vector<node> findAllCompatibles(vector<node>, size_t);
-node* makeParent(node*, node*);
+node makeParent(node*, node*);
 size_t min_node(vector<node>,bool);
 void erase(vector<node>*, size_t);
 
@@ -33,13 +33,15 @@ int main()
 		{ 10, 'l', 3 ,0 ,0 ,0 }
 	} };
 
+	node * root_first_tree = NULL;
 	
 	///////////ШАГ 1/////////////
 	// ищем локально минимальную совместимую пару (A, B)
 	size_t A = 0, B = 0;
-	while (arr.size()-1)
+	size_t size = arr.size();
+	while (size - 1)
 	{
-		for (size_t i = 0; i < arr.size(); i++) //перебор первого члена пары
+		for (size_t i = 0; i < size; i++) //перебор первого члена пары
 		{
 			// фиксируем i-тый
 
@@ -59,8 +61,12 @@ int main()
 		}
 		all_found:
 		//комбинируем л.м.с.п., первый член заменятся отцом, второй уходит
-		arr[A] = makeParent(&arr[A], &arr[B]);
+		//если корень пустой, кладем отца в корень
+		node first = arr[A];
+		node *f = &first;
+		arr[A] = makeParent(f, &arr[B]);
 		erase(&arr, B);
+		size--;
 	}
 	//ну и весь шаг надо зациклить пока в arr не останется один элемент
 
@@ -93,10 +99,12 @@ size_t min_node(vector<node> all, bool orEqual) {
 }
 
 void erase(vector<node> *nodes, size_t id) {
+	node rght = *(*nodes)[id - 1].right;   //костылиииииии
 	nodes->erase(nodes->begin() + id);
+	(*nodes)[id - 1].right = &rght;
 	for (size_t i = id; i < nodes->size(); i++)
 	{
-		--(*nodes)[i].id;
+		--(*nodes)[i].id;           //что делать с id детей?
 	}
 }
 
@@ -111,15 +119,16 @@ void incrementLevel(node *a) {
 node makeParent(node *a, node *b) {
 	incrementLevel(a);
 	incrementLevel(b);
-	node c;
+	/*node c;
 	c.id = a->id;
 	c.sign = '\0';
 	c.weight = (a->weight + b->weight);
 	c.level = 0;
 	c.left = a;
 	c.right = b;
-	return c;
-	//return { a->id, '\0', (a->weight+b->weight), 0, a, b };
+	node * zh = &c;
+	return c;*/
+	return { a->id, '\0', (a->weight+b->weight), 0, a, b };
 }
 
 vector<node> findAllCompatibles(vector<node> arr, size_t curr)
