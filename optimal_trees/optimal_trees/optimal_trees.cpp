@@ -11,87 +11,64 @@
 
 using namespace std;
 
-bool isCompatible(array<node, 11>, size_t, size_t);  //поиск всех своместимых для i-того элемента
-array<node, 11> findAllCompatibles(array<node, 11>, size_t, size_t);
+bool isCompatible(vector<node>, size_t, size_t);  //поиск всех своместимых для i-того элемента
+vector<node> findAllCompatibles(vector<node>, size_t);
+node* makeParent(node*, node*);
+size_t min_node(vector<node>,bool);
+void erase(vector<node>*, size_t);
 
 int main()
 {
-	array<node, 11> arr = { {
-		{ 'a',8,0,0,0 },
-		{ 'b',6,0,0,0 },
-		{ 'c',2,0,0,0 },
-		{ 'd',3,0,0,0 },
-		{ 'e',4,0,0,0 },
-		{ 'f',7,0,0,0 },
-		{ 'g',11,0,0,0 },
-		{ 'h',9,0,0,0 },
-		{ 'j',8,0,0,0 },
-		{ 'k',1,0,0,0 },
-		{ 'l',3,0,0,0 }
+	vector<node> arr = { {
+		{ 0, 'a', 8, 0, 0, 0 },
+		{ 1, 'b', 6, 0, 0, 0 },
+		{ 2, 'c', 2, 0, 0, 0 },
+		{ 3, 'd', 3, 0, 0, 0 },
+		{ 4, 'e', 4, 0, 0, 0 },
+		{ 5, 'f', 7, 0, 0, 0 },
+		{ 6, 'g', 11, 0, 0, 0 },
+		{ 7, 'h', 9, 0, 0, 0 },
+		{ 8, 'j', 8, 0, 0, 0 },
+		{ 9, 'k', 1, 0, 0, 0 },
+		{ 10, 'l', 3 ,0 ,0 ,0 }
 	} };
 
 	
-	array<node, 11>  curr_arr = arr; //бля, че он не ругается
-
-	size_t curr_size = curr_arr.size(); //кажется так надо, но это неточно 
-									  //(если можно корректно для curr_arr.size уменьшить длину массива, то не надо)
 	///////////ШАГ 1/////////////
 	// ищем локально минимальную совместимую пару (A, B)
 	size_t A = 0, B = 0;
-	while (curr_arr.size())
+	while (arr.size()-1)
 	{
-
-		for (size_t i = A; i < curr_size; i++) //перебор первого члена пары
+		for (size_t i = 0; i < arr.size(); i++) //перебор первого члена пары
 		{
-			array<node, 11> all_compatible;
-			size_t k = 0;
-			for (size_t j = 0; j < curr_size; j++) //перевод второго члена пары
-			{
-				if (i == j) continue;
-				all_compatible = findAllCompatibles(curr_arr, i, curr_size);  //первая часть первого условия л.м.с.п.
-				for (k = 0; k < all_compatible.size(); k++)  //вторая часть первого условия л.м.с.п.
-					if (!(all_compatible[k].weight > curr_arr[j].weight))
-						break;
-				if (k == all_compatible.size())
-				{
-					all_compatible = { 0 };  //хз как обнулит
-					all_compatible = findAllCompatibles(curr_arr, j, curr_size);  //первая часть второго условия л.м.с.п.
-					for (k = 0; k < all_compatible.size(); k++)   //вторая часть второго условия л.м.с.п.
-						if (!(all_compatible[k].weight >= curr_arr[i].weight))
-							break;
-					if (k == all_compatible.size())   //все условия выполнены, пара найдена
-					{
-						B = j;
-						break;
-					}
-				}
-				/*if (isCompatible(arr, i, j)) {
-					all_compatible[k] = arr[j];
-					++k;
-				}*/
-			}
-			if (k == all_compatible.size()) //возможно как-то можно прервать два цикла сразу
-			{
+			// фиксируем i-тый
+
+			// первая часть первого условия л.м.с.п.
+			// ищем все совместимые с i-тым
+			vector<node> compatibleWithI = findAllCompatibles(arr, i);
+			size_t j = min_node(compatibleWithI,false);
+			vector<node> compatibleWithJ = findAllCompatibles(arr, j);
+			size_t minCompatibleWithJ = min_node(compatibleWithJ,true);
+
+			if ((minCompatibleWithJ == i) && (i != j)) {
 				A = i;
-				break;
-			}
+				B = j;
+				goto all_found;
+				//break; break;
+			}			
 		}
-
-
-		//комбинируем л.м.с.п., первый член заменятся отцом, второй идёт нахуй
-		curr_arr[A].weight += curr_arr[B].weight; //что при этом делать с символами
-		curr_arr[A].level = max(curr_arr[A].level, curr_arr[B].level) + 1;
-		//тут надо изменить уровень у соответствующих элементов из arr
-		for (size_t i = B; i < curr_size - 1; i++)
-			swap(curr_arr[i], curr_arr[i + 1]);
-		curr_size--;
-
+		all_found:
+		//комбинируем л.м.с.п., первый член заменятся отцом, второй уходит
+		arr[A] = makeParent(&arr[A], &arr[B]);
+		erase(&arr, B);
 	}
-	//ну и весь шаг надо зациклить пока в curr_arr не останется один элемент
+	//ну и весь шаг надо зациклить пока в arr не останется один элемент
+
+	// дальше хуета
 
 	////////////ШАГ 2///////////////////
 	// стековый алгоритм
-	stack<node> st;  //обнулить наверное
+	stack<node> st;  
 	stack<node> qu;
 	for (int i = 10; i < 0; i--)  //инициализация стека по имени очередь
 		qu.push(arr[i]);
@@ -101,28 +78,70 @@ int main()
     return 0;
 }
 
-array<node, 11> findAllCompatibles(array<node,11> arr, size_t curr, size_t size)
+size_t min_node(vector<node> all, bool orEqual) {
+	size_t min = 0;
+	for (size_t i = 1; i < all.size(); i++)
+	{
+		if (orEqual) {
+			if (all[i].weight <= all[min].weight) min = i;
+		}
+		else {
+			if (all[i].weight < all[min].weight) min = i;
+		}
+	}
+	return all[min].id;
+}
+
+void erase(vector<node> *nodes, size_t id) {
+	nodes->erase(nodes->begin() + id);
+	for (size_t i = id; i < nodes->size(); i++)
+	{
+		--(*nodes)[i].id;
+	}
+}
+
+void incrementLevel(node *a) {
+	++(a->level);
+	if (a->left) {
+		incrementLevel(a->left);
+		incrementLevel(a->right);
+	}
+}
+
+node makeParent(node *a, node *b) {
+	incrementLevel(a);
+	incrementLevel(b);
+	node c;
+	c.id = a->id;
+	c.sign = '\0';
+	c.weight = (a->weight + b->weight);
+	c.level = 0;
+	c.left = a;
+	c.right = b;
+	return c;
+	//return { a->id, '\0', (a->weight+b->weight), 0, a, b };
+}
+
+vector<node> findAllCompatibles(vector<node> arr, size_t curr)
 {   
-	array<node, 11> all_compatible;
-	size_t k = 0;
-	for (size_t i = 0; i < size; i++)
+	vector<node> all_compatible;
+	for (size_t i = 0; i < arr.size(); i++)
 		if (i != curr && isCompatible(arr, curr, i))
 		{
-			all_compatible[k] = arr[i];
-			k++;
+			all_compatible.push_back(arr[i]);
 		}
-	return all_compatible;  //хз как правильно передать
+	return all_compatible;  
 }
 
 
 
-bool isCompatible(array<node, 11> arr, size_t a, size_t b) {
+bool isCompatible(vector<node> arr, size_t a, size_t b) {
 	if ((a == (b + 1)) || (a == (b - 1)))
 		return true;
 	if (a > b) swap(a, b);
 	for (size_t i = a + 1; i < b; i++)
 	{
-		if (!arr[i].level) return false;
+		if (arr[i].left==nullptr) return false;
 	}
 	return true;
 }
