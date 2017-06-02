@@ -11,15 +11,16 @@
 
 using namespace std;
 
-bool isCompatible(vector<node>, size_t, size_t);  //поиск всех своместимых для i-того элемента
-vector<node> findAllCompatibles(vector<node>&, size_t);
+bool isCompatible(vector<node*>&, size_t, size_t);  //поиск всех своместимых для i-того элемента
+vector<node*> findAllCompatibles(t_nodes&, size_t);
 node makeParent(node*, node*);
-size_t min_node(vector<node>,bool);
-void erase(vector<node>*, size_t);
+size_t min_node(vector<node*>,bool);
+void erase(t_nodes&, size_t);
 
 int main()
 {
-	vector<node> arr = { {
+	
+	vector<node> nodes = { {
 		{ 0, 'a', 8, 0, 0, 0 },
 		{ 1, 'b', 6, 0, 0, 0 },
 		{ 2, 'c', 2, 0, 0, 0 },
@@ -32,24 +33,37 @@ int main()
 		{ 9, 'k', 1, 0, 0, 0 },
 		{ 10, 'l', 3 ,0 ,0 ,0 }
 	} };
-
-	node * root_first_tree = NULL;
-	
+	vector<node*> pointers = { {
+			&nodes[0],
+			&nodes[1],
+			&nodes[2],
+			&nodes[3],
+			&nodes[4],
+			&nodes[5],
+			&nodes[6],
+			&nodes[7],
+			&nodes[8],
+			&nodes[9],
+			&nodes[10]
+		} };
+	t_nodes arr = { nodes.size(), pointers };
+	size_t max_parents = nodes.size() - 1;
+	size_t were = nodes.size();
+	node * parents = new node[max_parents];
 	///////////ШАГ 1/////////////
 	// ищем локально минимальную совместимую пару (A, B)
 	size_t  i, j;
-	size_t size = arr.size();
-	while (size - 1)
+	while (arr.size - 1)
 	{
-		for (i = 0; i < size; i++) //перебор первого члена пары
+		for (i = 0; i < arr.size; i++) //перебор первого члена пары
 		{
 			// фиксируем i-тый
 
 			// первая часть первого условия л.м.с.п.
 			// ищем все совместимые с i-тым
-			vector<node> compatibleWithI = findAllCompatibles(arr, i);
+			vector<node*> compatibleWithI = findAllCompatibles(arr, i);
 			j = min_node(compatibleWithI,false);
-			vector<node> compatibleWithJ = findAllCompatibles(arr, j);
+			vector<node*> compatibleWithJ = findAllCompatibles(arr, j);
 			size_t minCompatibleWithJ = min_node(compatibleWithJ,true);
 
 			if ((minCompatibleWithJ == i) && (i != j)) 
@@ -59,52 +73,50 @@ int main()
 		all_found:
 		//комбинируем л.м.с.п., первый член заменятся отцом, второй уходит
 		//если корень пустой, кладем отца в корень
-		node a = arr[i];
-		node b = arr[j];
-		arr[i] = makeParent(&a, &b);
-		erase(&arr, j);
-		size--;
+		//node a = arr.nodes[i];
+		//node b = arr.nodes[j];
+		
+		//arr.nodes.push_back(arr.nodes[i]);
+		parents[were - arr.size] = makeParent(arr.nodes[i], arr.nodes[j]);
+		arr.nodes[i] = &parents[were - arr.size];
+		erase(arr, j);
+		
 	}
 	//ну и весь шаг надо зациклить пока в arr не останется один элемент
 
 	// дальше хуета
 
 	////////////ШАГ 2///////////////////
-	// стековый алгоритм
-	stack<node> st;  
-	stack<node> qu;
-	for (int i = 10; i < 0; i--)  //инициализация стека по имени очередь
-		qu.push(arr[i]);
+	// стэковый алгоритм
+	stack<node*> st;
+	stack<node*> qu;
+	for (int i = 10; i >= 0; i--)  //инициализация стека по имени очередь
+		qu.push(&nodes[i]);
 	
-	while (Move1(st, qu));   //трабл с передачей по указателю
+	//	while (Move1(st, qu));   //трабл с передачей по указателю
 		
     return 0;
 }
 
-size_t min_node(vector<node> all, bool orEqual) {
+size_t min_node(vector<node*> all, bool orEqual) {
 	size_t min = 0;
 	for (size_t i = 1; i < all.size(); i++)
 	{
 		if (orEqual) {
-			if (all[i].weight <= all[min].weight) min = i;
+			if (all[i]->weight <= all[min]->weight) min = i;
 		}
 		else {
-			if (all[i].weight < all[min].weight) min = i;
+			if (all[i]->weight < all[min]->weight) min = i;
 		}
 	}
-	return all[min].id;
+	return all[min]->id;
 }
 
-void erase(vector<node> *nodes, size_t id) {
-	/*node rght = *(*nodes)[id - 1].right;   //костылиииииии
-	nodes->erase(nodes->begin() + id);
-	(*nodes)[id - 1].right = &rght;*/
-
-	for (size_t i = id; i < nodes->size() - 1; i++)
-	{
-		swap((*nodes)[i], (*nodes)[i + 1]);
-		--(*nodes)[i].id;           //что делать с id детей?
-	}
+void erase(t_nodes &n, size_t id) {
+	n.nodes.erase(n.nodes.begin() + id);
+	for (size_t i = id; i < n.size - 1; i++)
+		--n.nodes[i]->id;
+	--n.size;
 }
 
 void incrementLevel(node *a) {
@@ -130,26 +142,26 @@ node makeParent(node *a, node *b) {
 	return { a->id, '\0', (a->weight+b->weight), 0, a, b };
 }
 
-vector<node> findAllCompatibles(vector<node> &arr, size_t curr)
+vector<node*> findAllCompatibles(t_nodes &arr, size_t curr)
 {   
-	vector<node> all_compatible;
-	for (size_t i = 0; i < arr.size(); i++)
-		if (i != curr && isCompatible(arr, curr, i))
+	vector<node*> all_compatible;
+	for (size_t i = 0; i < arr.size; i++)
+		if (i != curr && isCompatible(arr.nodes, curr, i))
 		{
-			all_compatible.push_back(arr[i]);
+			all_compatible.push_back(arr.nodes[i]);
 		}
 	return all_compatible;  
 }
 
 
 
-bool isCompatible(vector<node> arr, size_t a, size_t b) {
+bool isCompatible(vector<node*> &arr, size_t a, size_t b) {
 	if ((a == (b + 1)) || (a == (b - 1)))
 		return true;
 	if (a > b) swap(a, b);
 	for (size_t i = a + 1; i < b; i++)
 	{
-		if (arr[i].left==nullptr) return false;
+		if (arr[i]->left==nullptr) return false;
 	}
 	return true;
 }
