@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <stack>
+#include <vector>
 
 using namespace std;
 
@@ -43,6 +44,23 @@ struct node {
 		left = Ob.left;
 		right = Ob.right;
 	}
+};
+
+struct t_nodes {
+	size_t size;
+	vector<node*> nodes;
+	//t_nodes() {
+	//	size = 0;
+	//	*nodes = { {0,0,0,0,0} };
+	//}
+	//t_nodes(size_t a, vector<node>* b) {
+	//	size = a;
+	//	nodes = b;
+	//}
+	//t_nodes(t_nodes & h) {
+	//	size = h.size;
+	//	nodes = h.nodes;
+	//}
 };
 
 
