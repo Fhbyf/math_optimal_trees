@@ -37,35 +37,32 @@ int main()
 	
 	///////////ШАГ 1/////////////
 	// ищем локально минимальную совместимую пару (A, B)
-	size_t A = 0, B = 0;
+	size_t  i, j;
 	size_t size = arr.size();
 	while (size - 1)
 	{
-		for (size_t i = 0; i < size; i++) //перебор первого члена пары
+		for (i = 0; i < size; i++) //перебор первого члена пары
 		{
 			// фиксируем i-тый
 
 			// первая часть первого условия л.м.с.п.
 			// ищем все совместимые с i-тым
 			vector<node> compatibleWithI = findAllCompatibles(arr, i);
-			size_t j = min_node(compatibleWithI,false);
+			j = min_node(compatibleWithI,false);
 			vector<node> compatibleWithJ = findAllCompatibles(arr, j);
 			size_t minCompatibleWithJ = min_node(compatibleWithJ,true);
 
-			if ((minCompatibleWithJ == i) && (i != j)) {
-				A = i;
-				B = j;
+			if ((minCompatibleWithJ == i) && (i != j)) 
 				goto all_found;
-				//break; break;
-			}			
+				//break; break;		
 		}
 		all_found:
 		//комбинируем л.м.с.п., первый член заменятся отцом, второй уходит
 		//если корень пустой, кладем отца в корень
-		node first = arr[A];
-		node *f = &first;
-		arr[A] = makeParent(f, &arr[B]);
-		erase(&arr, B);
+		node a = arr[i];
+		node b = arr[j];
+		arr[i] = makeParent(&a, &b);
+		erase(&arr, j);
 		size--;
 	}
 	//ну и весь шаг надо зациклить пока в arr не останется один элемент
