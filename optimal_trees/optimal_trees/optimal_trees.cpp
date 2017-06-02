@@ -14,7 +14,7 @@ using namespace std;
 bool isCompatible(vector<node>, size_t, size_t);  //поиск всех своместимых для i-того элемента
 vector<node> findAllCompatibles(vector<node>, size_t);
 node makeParent(node*, node*);
-size_t min_node(vector<node>,bool);
+size_t min_node(vector<node>, bool);
 void erase(vector<node>*, size_t);
 
 int main()
@@ -31,10 +31,10 @@ int main()
 		{ 8, 'j', 8, 0, 0, 0 },
 		{ 9, 'k', 1, 0, 0, 0 },
 		{ 10, 'l', 3 ,0 ,0 ,0 }
-	} };
+		} };
 
 	node * root_first_tree = NULL;
-	
+
 	///////////ШАГ 1/////////////
 	// ищем локально минимальную совместимую пару (A, B)
 	size_t  i, j;
@@ -48,15 +48,15 @@ int main()
 			// первая часть первого условия л.м.с.п.
 			// ищем все совместимые с i-тым
 			vector<node> compatibleWithI = findAllCompatibles(arr, i);
-			j = min_node(compatibleWithI,false);
+			j = min_node(compatibleWithI, false);
 			vector<node> compatibleWithJ = findAllCompatibles(arr, j);
-			size_t minCompatibleWithJ = min_node(compatibleWithJ,true);
+			size_t minCompatibleWithJ = min_node(compatibleWithJ, true);
 
-			if ((minCompatibleWithJ == i) && (i != j)) 
+			if ((minCompatibleWithJ == i) && (i != j))
 				goto all_found;
-				//break; break;		
+			//break; break;		
 		}
-		all_found:
+	all_found:
 		//комбинируем л.м.с.п., первый член заменятся отцом, второй уходит
 		//если корень пустой, кладем отца в корень
 		node a = arr[i];
@@ -71,14 +71,14 @@ int main()
 
 	////////////ШАГ 2///////////////////
 	// стековый алгоритм
-	stack<node> st;  
+	stack<node> st;
 	stack<node> qu;
 	for (int i = 10; i < 0; i--)  //инициализация стека по имени очередь
 		qu.push(arr[i]);
-	
+
 	while (Move1(st, qu));   //трабл с передачей по указателю
-		
-    return 0;
+
+	return 0;
 }
 
 size_t min_node(vector<node> all, bool orEqual) {
@@ -125,18 +125,18 @@ node makeParent(node *a, node *b) {
 	c.right = b;
 	node * zh = &c;
 	return c;*/
-	return { a->id, '\0', (a->weight+b->weight), 0, a, b };
+	return{ a->id, '\0', (a->weight + b->weight), 0, a, b };
 }
 
 vector<node> findAllCompatibles(vector<node> arr, size_t curr)
-{   
+{
 	vector<node> all_compatible;
 	for (size_t i = 0; i < arr.size(); i++)
 		if (i != curr && isCompatible(arr, curr, i))
 		{
 			all_compatible.push_back(arr[i]);
 		}
-	return all_compatible;  
+	return all_compatible;
 }
 
 
@@ -147,8 +147,7 @@ bool isCompatible(vector<node> arr, size_t a, size_t b) {
 	if (a > b) swap(a, b);
 	for (size_t i = a + 1; i < b; i++)
 	{
-		if (arr[i].left==nullptr) return false;
+		if (arr[i].left == nullptr) return false;
 	}
 	return true;
 }
-
