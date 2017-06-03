@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nodes.h" />
+    <ClInclude Include="pseudo_trees.h" />
     <ClInclude Include="Stack algorithm.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -153,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="optimal_trees.cpp" />
     <ClCompile Include="nodes.cpp" />
+    <ClCompile Include="pseudo_trees.cpp" />
     <ClCompile Include="Stack algorithm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

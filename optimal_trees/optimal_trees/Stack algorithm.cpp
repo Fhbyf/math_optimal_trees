@@ -67,7 +67,7 @@ bool Move3(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, 
 		node* top2 = st.top();
 		st.pop();
 		//что с символом делать
-		parents[parents_i] = makeParent(top1, top2, false);
+		parents[parents_i] = makeParent(top2, top1, false);
 		st.push(&parents[parents_i]);
 		++parents_i;
 		if (st.top()->level) return 1;
@@ -92,3 +92,17 @@ bool Move1(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, 
 	}
 }
 
+node* buildTree(vector<node>& nodes, node* parents) {
+	stack<node*> st;
+	stack<node*> qu;
+	size_t max_level = 0;
+	for (int i = nodes.size() - 1; i >= 0; i--)  //инициализация стека по имени очередь
+	{
+		if (nodes[i].level > max_level)
+			max_level = nodes[i].level;
+		qu.push(&nodes[i]);
+	}
+	size_t parents_i = 0;
+	while (Move1(st, qu, parents, parents_i, max_level));
+	return st.top();
+}

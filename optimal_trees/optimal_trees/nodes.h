@@ -19,6 +19,14 @@ struct node {
 		left = nullptr;
 		right = nullptr;
 	}
+	node(size_t i, char s, size_t w) {
+		id = i;
+		sign = s;
+		weight = w;
+		level = 0;
+		left = nullptr;
+		right = nullptr;
+	}
 	node(char s, size_t w, size_t l, node *lt, node *rt) {
 		id = NULL;
 		sign = s;
@@ -49,6 +57,8 @@ struct t_nodes {
 	size_t size;
 	vector<node*> nodes;
 };
+
+vector<node*> makePointersVector(vector<node>&);
 
 bool isCompatible(vector<node*>&, size_t, size_t);  //поиск всех своместимых для i-того элемента
 vector<node*> findAllCompatibles(t_nodes&, size_t);
