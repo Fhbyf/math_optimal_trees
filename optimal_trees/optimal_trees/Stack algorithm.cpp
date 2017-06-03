@@ -60,8 +60,8 @@ bool Move3(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, 
 	//строим дерево по принципу: два верхних элемента стека st располагаем на соответствующих уровнях
 	//делаем что-то похожее на //комбинируем л.м.с.п., первый член ...
 	//помещаем отца на уровень детей - 1, делаем связи между ними, очевидно
-	if (!qu.empty())
-	{
+	
+	//{
 		node* top1 = st.top();
 		st.pop();
 		node* top2 = st.top();
@@ -70,8 +70,8 @@ bool Move3(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, 
 		parents[parents_i] = makeParent(top1, top2, false);
 		st.push(&parents[parents_i]);
 		++parents_i;
-		return 1;
-	}
+		if (st.top()->level) return 1;
+	//}
 	return 0;
 }
 
