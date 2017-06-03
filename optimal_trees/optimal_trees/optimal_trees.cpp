@@ -2,20 +2,11 @@
 #include "stdafx.h"
 #include <iostream>
 #include <algorithm>
-#include <array>
-#include <queue>
 #include <stack>
 #include "Stack algorithm.h"
-
-//node *T;
+#include "nodes.h"
 
 using namespace std;
-
-bool isCompatible(vector<node*>&, size_t, size_t);  //поиск всех своместимых для i-того элемента
-vector<node*> findAllCompatibles(t_nodes&, size_t);
-node makeParent(node*, node*);
-size_t min_node(vector<node*>,bool);
-void erase(t_nodes&, size_t);
 
 int main()
 {
@@ -48,8 +39,8 @@ int main()
 		} };
 	t_nodes arr = { nodes.size(), pointers };
 	size_t max_parents = nodes.size() - 1;
-	size_t were = nodes.size();
 	node * parents = new node[max_parents];
+	size_t were = nodes.size();
 	///////////ШАГ 1/////////////
 	// ищем локально минимальную совместимую пару (A, B)
 	size_t  i, j;
@@ -77,7 +68,7 @@ int main()
 		//node b = arr.nodes[j];
 		
 		//arr.nodes.push_back(arr.nodes[i]);
-		parents[were - arr.size] = makeParent(arr.nodes[i], arr.nodes[j]);
+		parents[were - arr.size] = makeParent(arr.nodes[i], arr.nodes[j], true);
 		arr.nodes[i] = &parents[were - arr.size];
 		erase(arr, j);
 		
@@ -87,82 +78,12 @@ int main()
 	// дальше хуета
 
 	////////////ШАГ 2///////////////////
-	// стэковый алгоритм
+	// стековый алгоритм
 	stack<node*> st;
 	stack<node*> qu;
-	for (int i = 10; i >= 0; i--)  //инициализация стека по имени очередь
+	for (int i = nodes.size()-1; i >= 0; i--)  //инициализация стека по имени очередь
 		qu.push(&nodes[i]);
-	
-	//	while (Move1(st, qu));   //трабл с передачей по указателю
-		
+	size_t parents_i = 0;
+	while (Move1(st, qu, parents, parents_i));
     return 0;
 }
-
-size_t min_node(vector<node*> all, bool orEqual) {
-	size_t min = 0;
-	for (size_t i = 1; i < all.size(); i++)
-	{
-		if (orEqual) {
-			if (all[i]->weight <= all[min]->weight) min = i;
-		}
-		else {
-			if (all[i]->weight < all[min]->weight) min = i;
-		}
-	}
-	return all[min]->id;
-}
-
-void erase(t_nodes &n, size_t id) {
-	n.nodes.erase(n.nodes.begin() + id);
-	for (size_t i = id; i < n.size - 1; i++)
-		--n.nodes[i]->id;
-	--n.size;
-}
-
-void incrementLevel(node *a) {
-	++(a->level);
-	if (a->left) {
-		incrementLevel(a->left);
-		incrementLevel(a->right);
-	}
-}
-
-node makeParent(node *a, node *b) {
-	incrementLevel(a);
-	incrementLevel(b);
-	/*node c;
-	c.id = a->id;
-	c.sign = '\0';
-	c.weight = (a->weight + b->weight);
-	c.level = 0;
-	c.left = a;
-	c.right = b;
-	node * zh = &c;
-	return c;*/
-	return { a->id, '\0', (a->weight+b->weight), 0, a, b };
-}
-
-vector<node*> findAllCompatibles(t_nodes &arr, size_t curr)
-{   
-	vector<node*> all_compatible;
-	for (size_t i = 0; i < arr.size; i++)
-		if (i != curr && isCompatible(arr.nodes, curr, i))
-		{
-			all_compatible.push_back(arr.nodes[i]);
-		}
-	return all_compatible;  
-}
-
-
-
-bool isCompatible(vector<node*> &arr, size_t a, size_t b) {
-	if ((a == (b + 1)) || (a == (b - 1)))
-		return true;
-	if (a > b) swap(a, b);
-	for (size_t i = a + 1; i < b; i++)
-	{
-		if (arr[i]->left==nullptr) return false;
-	}
-	return true;
-}
-
