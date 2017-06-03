@@ -23,20 +23,21 @@ int main()
 	cout << "Введите имя файла" << endl;
 	string filename;
 	cin >> filename;
-	ifstream file(filename);
+	ifstream in(filename);
 	map<char, size_t> chars;
 
 	// читаем файл
-	if (!file.is_open())
+	if (!in.is_open())
 		cout << "Мы не смогли открыть файл" << endl;
 
-	while (!file.eof())
+	while (!in.eof())
 	{
 		char c;
-		file.get(c);
-		if (!file.eof())
+		in.get(c);
+		if (!in.eof())
 			++chars[c];
 	}
+	in.close();
 
 	vector<node> nodes = buildNodesFromMap(chars);
 	vector<node*> pointers = makePointersVector(nodes);
@@ -49,6 +50,18 @@ int main()
 	node* root = buildTree(nodes, parents);
 
 	map<char, string> coded = codeChars(root);
+
+	cout << "Введите имя файла, куда записать ключи кодирования" << endl;
+	cin >> filename;
+	ofstream out(filename);
+	//
+	out.close();
+
+	//cout << "Введите имя файла, в который надо сохранить закодированный текст" << endl;
+	//cin >> filename;
+	//ofstream out(filename);
+	////
+	//out.close();
 
     return 0;
 }
