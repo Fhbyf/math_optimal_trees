@@ -2,7 +2,9 @@
 #include "stdafx.h"
 #include <string>
 #include <iostream>
+#include <conio.h>
 #include <algorithm>
+#include <iomanip>  
 #include <stack>
 #include "nodes.h"
 #include "Stack algorithm.h"
@@ -20,15 +22,27 @@ map<char, string> codeChars(node*);
 int main()
 {
 	setlocale(0, "");
+	map<char, size_t> chars;
+	int HuTucker_or_GarsiaWachs = 0; // 0 — алгоритм Ху—Таккера, 1 — алгоритм Гарсия и Уочса
+	string filename, filename_for_code, filename_for_save;
 	cout << "Введите имя файла" << endl;
-	string filename;
 	cin >> filename;
 	ifstream in(filename);
-	map<char, size_t> chars;
 
-	// читаем файл
+	cout << endl << "Закодировать текст из выбранного файла, применив алгоритм Ху-Таккера (нажмите 0) или Гарсия и Уочса (нажмите 1): ";
+	cin >> HuTucker_or_GarsiaWachs;
+	if (HuTucker_or_GarsiaWachs != 0 && HuTucker_or_GarsiaWachs != 1)
+	{
+		cout << endl << "Ошибка. Нажмите 0, чтобы применить алгоритм Ху-Таккера, или 1, чтобы применить алгоритм Гарсия и Уочса: ";
+		cin >> HuTucker_or_GarsiaWachs;
+	}
+
+	(bool)HuTucker_or_GarsiaWachs;
+
+	// читаем файл с текстом
 	if (!in.is_open())
 		cout << "Мы не смогли открыть файл" << endl;
+	system("cls");
 
 	while (!in.eof())
 	{
@@ -42,27 +56,73 @@ int main()
 	vector<node> nodes = buildNodesFromMap(chars);
 	vector<node*> pointers = makePointersVector(nodes);
 	t_nodes arr = { nodes.size(), pointers };
+
 	// ШАГ 1. Строим псевдодерево для рассчёта уровней
 	node* parents = new node[nodes.size() - 1];
-	const bool HuTucker_or_GarsiaWachs = 0; // 0 — алгоритм Ху—Таккера, 1 — алгоритм Гарсия и Уочса
 	node* pseudo_root = buildPseudoTree(HuTucker_or_GarsiaWachs, arr, nodes, parents);
+
 	// ШАГ 2. Стековый алгоритм
 	node* root = buildTree(nodes, parents);
-
 	map<char, string> coded = codeChars(root);
 
-	cout << "Введите имя файла, куда записать ключи кодирования" << endl;
-	cin >> filename;
-	ofstream out(filename);
-	//
+
+	cout << "Символы, которые встречаются в тексте и их коды, полученные с помощью ";
+	if (!HuTucker_or_GarsiaWachs)
+		cout << "алгоритма Ху-Таккера\n\n";
+	else
+		cout << "алгоритма Гарсиа и Уочса\n\n";
+	for (auto it = coded.begin(); it != coded.end(); it++)
+	{
+		char sym = it->first;
+		switch (sym)
+		{
+		case ' ':
+			cout << "\" \" ";
+			break;
+		case '\t':
+			cout << "\\" << "t  ";
+			break;
+		case '\n':
+			cout << "\\" << "n  ";
+			break;
+		case '\r':
+			cout << "\\" << "r  ";
+			break;
+		case '\v':
+			cout << "\\" << "v  ";
+			break;
+		default:
+			cout << sym << "   ";
+			break;
+		}
+		cout << it->second << endl;
+	}
+
+	cout << endl << "Введите имя файла, куда записать ключи кодирования" << endl;
+	cin >> filename_for_code;
+	ofstream out(filename_for_code);
+	
+	for(auto it = coded.begin(); it != coded.end(); it++)
+		out << it->first << " " << it->second << endl;
 	out.close();
 
-	//cout << "Введите имя файла, в который надо сохранить закодированный текст" << endl;
-	//cin >> filename;
-	//ofstream out(filename);
-	////
-	//out.close();
+	cout << "Введите имя файла, в который надо сохранить закодированный текст" << endl;
+	cin >> filename_for_save;
 
+	ifstream file_in(filename);
+	ofstream file_out(filename_for_save);
+	if (!file_in.is_open())
+		cout << "Мы не смогли открыть файл для чтения" << endl;
+	if (!file_out.is_open())
+		cout << "Мы не смогли открыть файл для сохранения" << endl;
+	while (!file_in.eof())
+	{
+		char sym = file_in.get();
+		file_out << coded[sym];
+	}
+	file_in.close();
+	file_out.close();
+	system("Pause");
     return 0;
 }
 
