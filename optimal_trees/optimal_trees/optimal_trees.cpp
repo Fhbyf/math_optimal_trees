@@ -81,9 +81,14 @@ int main()
 	// стековый алгоритм
 	stack<node*> st;
 	stack<node*> qu;
-	for (int i = nodes.size()-1; i >= 0; i--)  //инициализация стека по имени очередь
+	size_t max_level = 0;
+	for (int i = nodes.size() - 1; i >= 0; i--)  //инициализация стека по имени очередь
+	{
+		if (nodes[i].level > max_level)
+			max_level = nodes[i].level;
 		qu.push(&nodes[i]);
+	}
 	size_t parents_i = 0;
-	while (Move1(st, qu, parents, parents_i));
+	while (Move1(st, qu, parents, parents_i, max_level));
     return 0;
 }

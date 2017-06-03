@@ -5,4 +5,4 @@
 
 using namespace std;
 
-bool Move1(stack<node*> &st, stack<node*> &qu, node* parents, size_t& parents_i);
+bool Move1(stack<node*> &st, stack<node*> &qu, node* parents, size_t& parents_i, size_t max_level);
