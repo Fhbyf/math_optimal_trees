@@ -5,6 +5,15 @@
 
 using namespace std;
 
+vector<node*> makePointersVector(vector<node>& nodes) {
+	vector<node*> r;
+	for (size_t i = 0; i < nodes.size(); i++)
+	{
+		r.push_back(&nodes[i]);
+	}
+	return r;
+}
+
 size_t min_node(vector<node*> all, bool orEqual) {
 	size_t min = 0;
 	for (size_t i = 1; i < all.size(); i++)
