@@ -48,7 +48,7 @@ bool Move1(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i)
 node* buildTree(vector<node>& nodes, node* parents) {
 	stack<node*> st;
 	stack<node*> qu;
-	for (int i = nodes.size() - 1; i >= 0; i--)  //инициализация стека по имени очередь
+	for (size_t i = nodes.size() - 1; i >= 0; i--)  //инициализация стека по имени очередь
 		qu.push(&nodes[i]);
 	size_t parents_i = 0;
 	while (Move1(st, qu, parents, parents_i));
