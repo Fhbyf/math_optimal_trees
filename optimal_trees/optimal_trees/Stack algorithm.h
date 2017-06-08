@@ -6,5 +6,8 @@
 
 using namespace std;
 
-bool Move1(stack<node*> &st, stack<node*> &qu, node* parents, size_t& parents_i, size_t max_level);
+bool Move1(stack<node*>&, stack<node*>&, node*, size_t&, size_t);
+void Move2(stack<node*>&, stack<node*>&, node*, size_t&, size_t);
+bool Move3(stack<node*>&, stack<node*>&, node*, size_t&, size_t);
+
 node* buildTree(vector<node>&, node*);

@@ -54,8 +54,7 @@ int main()
 	in.close();
 
 	vector<node> nodes = buildNodesFromMap(chars);
-	vector<node*> pointers = makePointersVector(nodes);
-	t_nodes arr = { nodes.size(), pointers };
+	vector<node*> arr = makePointersVector(nodes);
 
 	// ШАГ 1. Строим псевдодерево для рассчёта уровней
 	node* parents = new node[nodes.size() - 1];

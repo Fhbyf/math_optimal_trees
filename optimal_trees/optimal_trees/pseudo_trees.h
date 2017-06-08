@@ -5,6 +5,6 @@
 
 using namespace std;
 
-node* buildPseudoTree(bool, t_nodes&, vector<node>&, node*);
-node* buildPseudoTree_HuTucker(t_nodes&, vector<node>&, node*);
-node* buildPseudoTree_GarsiaWachs(t_nodes&, vector<node>&, node*);
+node* buildPseudoTree(bool, vector<node*>&, vector<node>&, node*);
+node* buildPseudoTree_HuTucker(vector<node*>&, vector<node>&, node*);
+node* buildPseudoTree_GarsiaWachs(vector<node*>&, vector<node>&, node*);
