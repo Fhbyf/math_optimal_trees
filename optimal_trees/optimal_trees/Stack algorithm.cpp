@@ -34,7 +34,7 @@ bool Move3(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, 
 	return 0;
 }
 
-bool Move1(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, size_t max_level)   //передача по указателю
+bool Move1(stack<node*> &st, stack<node*> &qu, node*parents, size_t& parents_i, size_t max_level)
 {
 	if (st.size() < 2)
 		Move2(st, qu, parents, parents_i, max_level);
