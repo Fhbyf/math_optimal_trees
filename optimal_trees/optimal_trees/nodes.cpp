@@ -28,14 +28,13 @@ size_t min_node(vector<node*> all, bool orEqual) {
 	return all[min]->id;
 }
 
-void erase(t_nodes &n, size_t id) {
-	n.nodes.erase(n.nodes.begin() + id);
-	for (size_t i = id; i < n.size - 1; i++)
-		--n.nodes[i]->id;
-	--n.size;
+void erase(vector<node*>& n, size_t id) {
+	n.erase(n.begin() + id);
+	for (size_t i = id; i < n.size(); i++)
+		--n[i]->id;
 }
 
-void incrementLevel(node *a) {
+void incrementLevel(node* a) {
 	++(a->level);
 	if (a->left) {
 		incrementLevel(a->left);
@@ -43,7 +42,7 @@ void incrementLevel(node *a) {
 	}
 }
 
-node makeParent(node *a, node *b, bool increment = true) {
+node makeParent(node* a, node* b, bool increment = true) {
 	if (increment) {
 		incrementLevel(a);
 		incrementLevel(b);
@@ -52,13 +51,13 @@ node makeParent(node *a, node *b, bool increment = true) {
 	return{ a->id, '\0', (a->weight + b->weight), (a->level - 1), a, b };
 }
 
-vector<node*> findAllCompatibles(t_nodes &arr, size_t curr)
+vector<node*> findAllCompatibles(vector<node*>& arr, size_t curr)
 {
 	vector<node*> all_compatible;
-	for (size_t i = 0; i < arr.size; i++)
-		if (i != curr && isCompatible(arr.nodes, curr, i))
+	for (size_t i = 0; i < arr.size(); i++)
+		if (i != curr && isCompatible(arr, curr, i))
 		{
-			all_compatible.push_back(arr.nodes[i]);
+			all_compatible.push_back(arr[i]);
 		}
 	return all_compatible;
 }

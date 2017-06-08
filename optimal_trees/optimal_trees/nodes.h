@@ -53,15 +53,10 @@ struct node {
 	}
 };
 
-struct t_nodes {
-	size_t size;
-	vector<node*> nodes;
-};
-
 vector<node*> makePointersVector(vector<node>&);
 
 bool isCompatible(vector<node*>&, size_t, size_t);  //поиск всех своместимых для i-того элемента
-vector<node*> findAllCompatibles(t_nodes&, size_t);
+vector<node*> findAllCompatibles(vector<node*>&, size_t);
 node makeParent(node*, node*, bool);
 size_t min_node(vector<node*>, bool);
-void erase(t_nodes&, size_t);
+void erase(vector<node*>&, size_t);
