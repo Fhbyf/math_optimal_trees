@@ -9,7 +9,7 @@
 [Исполняемый файл](https://drive.google.com/drive/folders/0B3i4nTNVsML6SWpZNG9LSmlLQjQ) (Google Drive).
 
 ### Linux
-Для сборки нужен g++ и следующий порядок команд:
+Для сборки нужен `g++` и следующий порядок команд:
 ```
 g++ -std=c++11 -c includes/nodes.cpp -o includes/nodes.o
 ```
