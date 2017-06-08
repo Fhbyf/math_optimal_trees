@@ -142,15 +142,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="nodes.h" />
-    <ClInclude Include="pseudo_trees.h" />
-    <ClInclude Include="stack_algorithm.h" />
+    <ClInclude Include="includes\nodes.h" />
+    <ClInclude Include="includes\pseudo_trees.h" />
+    <ClInclude Include="includes\stack_algorithm.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="optimal_trees.cpp" />
-    <ClCompile Include="nodes.cpp" />
-    <ClCompile Include="pseudo_trees.cpp" />
-    <ClCompile Include="stack_algorithm.cpp" />
+    <ClCompile Include="includes\nodes.cpp" />
+    <ClCompile Include="includes\pseudo_trees.cpp" />
+    <ClCompile Include="includes\stack_algorithm.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

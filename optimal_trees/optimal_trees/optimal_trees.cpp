@@ -6,9 +6,9 @@
 #include <iomanip>  
 #include <stack>
 
-#include "nodes.h"
-#include "stack_algorithm.h"
-#include "pseudo_trees.h"
+#include "includes/nodes.h"
+#include "includes/stack_algorithm.h"
+#include "includes/pseudo_trees.h"
 
 #include <fstream>
 #include <map>
