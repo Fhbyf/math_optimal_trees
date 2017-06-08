@@ -30,7 +30,7 @@ int main()
 
 	cout << endl << "Закодировать текст из выбранного файла, применив алгоритм Ху-Таккера (нажмите 0) или Гарсия и Уочса (нажмите 1): ";
 	cin >> HuTucker_or_GarsiaWachs;
-	if (HuTucker_or_GarsiaWachs != 0 && HuTucker_or_GarsiaWachs != 1)
+	while (HuTucker_or_GarsiaWachs != 0 && HuTucker_or_GarsiaWachs != 1)
 	{
 		cout << endl << "Ошибка. Нажмите 0, чтобы применить алгоритм Ху-Таккера, или 1, чтобы применить алгоритм Гарсия и Уочса: ";
 		cin >> HuTucker_or_GarsiaWachs;
@@ -40,7 +40,7 @@ int main()
 	// читаем файл с текстом
 	if (!in.is_open()) {
 		cout << "Мы не смогли открыть файл" << endl;
-		cout << "Нажмите Enter для закрытия программы...";
+		cout << "Нажмите Enter для закрытия программы..." << endl;
 		cin.get();
 		return 0;
 	}
@@ -124,7 +124,7 @@ int main()
 	}
 	file_in.close();
 	file_out.close();
-	cout << "Нажмите Enter для закрытия программы...";
+	cout << "Нажмите Enter для закрытия программы..." << endl;
 	cin.get();
     return 0;
 }
