@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "pseudo_trees.h"
 #include "nodes.h"
 #include <vector>

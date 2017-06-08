@@ -1,13 +1,13 @@
 #pragma once
-#include "stdafx.h"
 #include <string>
 #include <iostream>
 #include <conio.h>
 #include <algorithm>
 #include <iomanip>  
 #include <stack>
+
 #include "nodes.h"
-#include "Stack algorithm.h"
+#include "stack_algorithm.h"
 #include "pseudo_trees.h"
 
 #include <fstream>

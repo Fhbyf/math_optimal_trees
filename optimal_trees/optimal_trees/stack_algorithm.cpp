@@ -1,9 +1,8 @@
 #pragma once
-#include "stdafx.h"
 #include <iostream>
 #include <stack>
 #include "nodes.h"
-#include "Stack algorithm.h"
+#include "stack_algorithm.h"
 
 using namespace std;
 
