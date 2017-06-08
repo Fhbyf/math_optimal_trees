@@ -5,7 +5,22 @@
 ### Демонстрация работы алгоритмов
 Пример использования написанных библиотек — программа для кодирования текста при помощи алгоритмов Ху—Таккера и Гарсия—Уочса.
 
-[Исполняемый файл](https://drive.google.com/drive/folders/0B3i4nTNVsML6SWpZNG9LSmlLQjQ) программы (Windows или Wine).
+**Windows**
+[Исполняемый файл](https://drive.google.com/drive/folders/0B3i4nTNVsML6SWpZNG9LSmlLQjQ) (Google Drive).
+
+**Linux**
+Для сборки нужен g++ и следующий порядок команд:
+```
+g++ -std=c++11 -c includes/nodes.cpp -o includes/nodes.o
+g++ -std=c++11 -c includes/pseudo_trees.cpp -o includes/pseudo_trees.o
+g++ -std=c++11 -c includes/stack_algorithm.cpp -o includes/stack_algorithm.o
+g++ -std=c++11 -finput-charset=CP1251 includes/nodes.o includes/pseudo_trees.o 
+includes/stack_algorithm.o optimal_trees.cpp -o optimal_trees
+```
+Запуск:
+```
+./optimal_trees
+```
 
 На вход программе подаётся некоторый текстовый файл. Считывая его посимвольно, программа считает количество вхождений каждого символа, после чего пару "символ—вес" перегоняет в формат узлов дерева, последовательность которых отдаётся одному из двух алгоритмов.
 
