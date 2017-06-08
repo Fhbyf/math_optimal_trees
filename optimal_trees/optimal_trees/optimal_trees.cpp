@@ -1,7 +1,6 @@
-#pragma once
+#include <stdio.h>
 #include <string>
 #include <iostream>
-#include <conio.h>
 #include <algorithm>
 #include <iomanip>  
 #include <stack>
@@ -41,7 +40,8 @@ int main()
 	// читаем файл с текстом
 	if (!in.is_open()) {
 		cout << "Мы не смогли открыть файл" << endl;
-		system("pause");
+		cout << "Нажмите Enter для закрытия программы...";
+		cin.get();
 		return 0;
 	}
 		
@@ -124,7 +124,8 @@ int main()
 	}
 	file_in.close();
 	file_out.close();
-	system("Pause");
+	cout << "Нажмите Enter для закрытия программы...";
+	cin.get();
     return 0;
 }
 
