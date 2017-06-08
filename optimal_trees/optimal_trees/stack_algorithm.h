@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "nodes.h"
 #include <stack>
 #include <vector>

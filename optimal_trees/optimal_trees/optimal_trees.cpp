@@ -1,13 +1,13 @@
 #pragma once
-#include "stdafx.h"
 #include <string>
 #include <iostream>
 #include <conio.h>
 #include <algorithm>
 #include <iomanip>  
 #include <stack>
+
 #include "nodes.h"
-#include "Stack algorithm.h"
+#include "stack_algorithm.h"
 #include "pseudo_trees.h"
 
 #include <fstream>
@@ -23,7 +23,7 @@ int main()
 {
 	setlocale(0, "");
 	map<char, size_t> chars;
-	int HuTucker_or_GarsiaWachs = 0; // 0 — алгоритм Ху—Таккера, 1 — алгоритм Гарсия и Уочса
+	short int HuTucker_or_GarsiaWachs = 0; // 0 — алгоритм Ху—Таккера, 1 — алгоритм Гарсия и Уочса
 	string filename, filename_for_code, filename_for_save;
 	cout << "Введите имя файла" << endl;
 	cin >> filename;
@@ -37,11 +37,14 @@ int main()
 		cin >> HuTucker_or_GarsiaWachs;
 	}
 
-	(bool)HuTucker_or_GarsiaWachs;
 
 	// читаем файл с текстом
-	if (!in.is_open())
+	if (!in.is_open()) {
 		cout << "Мы не смогли открыть файл" << endl;
+		system("pause");
+		return 0;
+	}
+		
 	system("cls");
 
 	while (!in.eof())
@@ -58,7 +61,7 @@ int main()
 
 	// ШАГ 1. Строим псевдодерево для рассчёта уровней
 	node* parents = new node[nodes.size() - 1];
-	node* pseudo_root = buildPseudoTree(HuTucker_or_GarsiaWachs, arr, nodes, parents);
+	node* pseudo_root = buildPseudoTree((bool)HuTucker_or_GarsiaWachs, arr, nodes, parents);
 
 	// ШАГ 2. Стековый алгоритм
 	node* root = buildTree(nodes, parents);
