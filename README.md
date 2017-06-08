@@ -12,8 +12,14 @@
 Для сборки нужен g++ и следующий порядок команд:
 ```
 g++ -std=c++11 -c includes/nodes.cpp -o includes/nodes.o
+```
+```
 g++ -std=c++11 -c includes/pseudo_trees.cpp -o includes/pseudo_trees.o
+```
+```
 g++ -std=c++11 -c includes/stack_algorithm.cpp -o includes/stack_algorithm.o
+```
+```
 g++ -std=c++11 -finput-charset=CP1251 includes/nodes.o includes/pseudo_trees.o 
 includes/stack_algorithm.o optimal_trees.cpp -o optimal_trees
 ```
