@@ -11,7 +11,7 @@ struct node {
 	node* left;
 	node* right;
 	node() {
-		id = NULL;
+		id = 0;
 		sign = 0;
 		weight = 0;
 		level = 0;
@@ -27,7 +27,7 @@ struct node {
 		right = nullptr;
 	}
 	node(char s, size_t w, size_t l, node *lt, node *rt) {
-		id = NULL;
+		id = 0;
 		sign = s;
 		weight = w;
 		level = l;

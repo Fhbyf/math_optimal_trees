@@ -1,14 +1,13 @@
-#pragma once
+#include <stdio.h>
 #include <string>
 #include <iostream>
-#include <conio.h>
 #include <algorithm>
 #include <iomanip>  
 #include <stack>
 
-#include "nodes.h"
-#include "stack_algorithm.h"
-#include "pseudo_trees.h"
+#include "includes/nodes.h"
+#include "includes/stack_algorithm.h"
+#include "includes/pseudo_trees.h"
 
 #include <fstream>
 #include <map>
@@ -31,7 +30,7 @@ int main()
 
 	cout << endl << "Закодировать текст из выбранного файла, применив алгоритм Ху-Таккера (нажмите 0) или Гарсия и Уочса (нажмите 1): ";
 	cin >> HuTucker_or_GarsiaWachs;
-	if (HuTucker_or_GarsiaWachs != 0 && HuTucker_or_GarsiaWachs != 1)
+	while (HuTucker_or_GarsiaWachs != 0 && HuTucker_or_GarsiaWachs != 1)
 	{
 		cout << endl << "Ошибка. Нажмите 0, чтобы применить алгоритм Ху-Таккера, или 1, чтобы применить алгоритм Гарсия и Уочса: ";
 		cin >> HuTucker_or_GarsiaWachs;
@@ -41,7 +40,8 @@ int main()
 	// читаем файл с текстом
 	if (!in.is_open()) {
 		cout << "Мы не смогли открыть файл" << endl;
-		system("pause");
+		cout << "Нажмите Enter для закрытия программы..." << endl;
+		cin.get();
 		return 0;
 	}
 		
@@ -124,7 +124,8 @@ int main()
 	}
 	file_in.close();
 	file_out.close();
-	system("Pause");
+	cout << "Нажмите Enter для закрытия программы..." << endl;
+	cin.get();
     return 0;
 }
 
